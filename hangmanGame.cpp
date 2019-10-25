@@ -108,6 +108,10 @@ string get_secret_word(int difficulty_level)
         file_name = "hangmanGameHard.txt";
         secret_word = get_word(file_name, word_number);
     }
+    for (int i = 0; secret_word[i]!='\0'; i++)
+    {
+        secret_word[i] =toupper(secret_word[i]);
+    }
     return secret_word;
 }
 void print_word(string guess_so_far)
@@ -175,48 +179,42 @@ bool win_or_not (int wrong_guess_count, int letter_count, string secret_word)
 
 void hangman_count(int wrong_guess_count)
 {
-     if (wrong_guess_count == 1)
-     {
-         cout << "o" << endl;
-     }
-     else if (wrong_guess_count == 2)
-     {
-         cout << "  o" << endl;
-         cout << "  | " << endl;
-     }
-     else if (wrong_guess_count == 3)
-     {
-         cout << "  o " << endl;
-         cout << " \\|" << endl;
-     }
-     else if (wrong_guess_count == 4)
-     {
-         cout << "  o " << endl;
-         cout << " \\|/" << endl;
-     }
-     else if (wrong_guess_count == 5)
-     {
-         cout << " o " << endl;
-         cout << "\\|/" << endl;
-         cout << " | " << endl;
-     }
-     else if (wrong_guess_count == 6)
-     {
-         cout << " o " << endl;
-         cout << "\\|/" << endl;
-         cout << " | " << endl;
-         cout << "/ " << endl;
-     }
-     else 
-     {
-         cout << "HANGMAN!" << endl;
-         cout << " o " << endl;
-         cout << "\\|/" << endl;
-         cout << " | " << endl;
-         cout << "/ \\" << endl; 
-     }
+    switch (wrong_guess_count)
+    {
+        case 1: 
+            cout << "o" << endl;
+            break;
+        case 2:
+            cout << "  o" << endl;
+            cout << "  | " << endl;
+            break;
+        case 3:
+            cout << "  o " << endl;
+            cout << " \\|" << endl;
+            break;
+        case 4:
+            cout << "  o " << endl;
+            cout << " \\|/" << endl;
+            break;
+        case 5:
+            cout << " o " << endl;
+            cout << "\\|/" << endl;
+            cout << " | " << endl;
+            break;
+        case 6:
+            cout << " o " << endl;
+            cout << "\\|/" << endl;
+            cout << " | " << endl;
+            cout << "/ " << endl;
+            break;
+        default:
+            cout << "HANGMAN!" << endl;
+            cout << " o " << endl;
+            cout << "\\|/" << endl;
+            cout << " | " << endl;
+            cout << "/ \\" << endl; 
+    }
 }
- 
 
 int choose_difficulty()
 {
@@ -247,10 +245,6 @@ int main()
 
     // Get the Secret Word.
     secret_word = get_secret_word(difficulty_level);
-    for (int i = 0; secret_word[i]!='\0'; i++)
-    {
-    secret_word[i] =toupper(secret_word[i]);
-    }
     cout << "The secret word is :  " << secret_word << endl;
     //print_word(secret_word);
     cout << endl;
