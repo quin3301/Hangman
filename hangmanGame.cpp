@@ -216,84 +216,92 @@ void hangman_count(int wrong_guess_count)
          cout << "/ \\" << endl; 
      }
 }
+ 
 
-int main()
-  {
-      int difficulty_level = 0;
-      int word_number, letter_count = 0, wrong_guess_count = 0;
-      string secret_word, current_guess, guess_so_far;
-      bool true_or_not = false, finish = false; bool win = false;
-      locale loc;
-
-      // Difficulty Level.
-      cout << "DIFFICULTY:  (1)EASY\n";
-      cout << "             (2)MEDIUM\n";
-      cout << "             (3)HARD\n";
-      cout << "ENTER:  ";
-      cin >> difficulty_level;
-      while (difficulty_level > 3)
-      {
+int choose_difficulty()
+{
+    int difficulty_level;
+    cout << "DIFFICULTY:  (1)EASY\n";
+    cout << "             (2)MEDIUM\n";
+    cout << "             (3)HARD\n";
+    cout << "ENTER:  ";
+    cin >> difficulty_level;
+    while (difficulty_level > 3)
+    {
         cout << "PLEASE ENTER A NUMBER FROM 1 - 3:  " << endl;
         cin >> difficulty_level;
-      }
+    }
+    return difficulty_level;
+}
 
-      // Get the Secret Word.
-      secret_word = get_secret_word(difficulty_level);
-      for (int i = 0; secret_word[i]!='\0'; i++)
-      {
-        secret_word[i] =toupper(secret_word[i]);
-      }
-      cout << "The secret word is :  " << secret_word << endl;
-      //print_word(secret_word);
-      cout << endl;
+int main()
+{
+    int difficulty_level = 0;
+    int word_number, letter_count = 0, wrong_guess_count = 0;
+    string secret_word, current_guess, guess_so_far;
+    bool true_or_not = false, finish = false; bool win = false;
+    locale loc;
+    
+    // Get difficulty level
+    difficulty_level = choose_difficulty();
 
-      for (int i = 0; i < secret_word.length(); i++)
-      {
-          guess_so_far = "- ";
-          cout << guess_so_far;
-      }
-      cout << endl;
+    // Get the Secret Word.
+    secret_word = get_secret_word(difficulty_level);
+    for (int i = 0; secret_word[i]!='\0'; i++)
+    {
+    secret_word[i] =toupper(secret_word[i]);
+    }
+    cout << "The secret word is :  " << secret_word << endl;
+    //print_word(secret_word);
+    cout << endl;
 
-      // Start Guessing
-      while (finish == false)
-      {
-        cout << "Enter a letter to guess:  " << endl;
-        cin >> current_guess;
-        for (int i = 0; current_guess[i]!='\0'; i++)
+    for (int i = 0; i < secret_word.length(); i++)
+    {
+        guess_so_far = "- ";
+        cout << guess_so_far;
+    }
+    cout << endl;
+
+    // Start Guessing
+    while (finish == false)
+    {
+    cout << "Enter a letter to guess:  " << endl;
+    cin >> current_guess;
+    for (int i = 0; current_guess[i]!='\0'; i++)
+    {
+        current_guess[i] =toupper(current_guess[i]);
+    }
+    true_or_not = right_or_not(current_guess, secret_word, guess_so_far);
+    cout << endl;
+    if (true_or_not)
+    {
+        cout << "Good guess!" << endl;
+        letter_count++;
+        cout << "letter_count = " << letter_count << endl;  
+    }
+    else
+    {
+        cout << "Try again." << endl;
+        wrong_guess_count++;
+        cout << "wrong_guess_count = " << wrong_guess_count << endl;
+        hangman_count(wrong_guess_count);
+    }
+    finish = check_endgame(wrong_guess_count, letter_count, secret_word);
+    win = win_or_not(wrong_guess_count, letter_count, secret_word);
+    if (finish == true)
+    {
+        if (win == true)
         {
-            current_guess[i] =toupper(current_guess[i]);
-        }
-        true_or_not = right_or_not(current_guess, secret_word, guess_so_far);
-        cout << endl;
-        if (true_or_not)
-        {
-            cout << "Good guess!" << endl;
-            letter_count++;
-            cout << "letter_count = " << letter_count << endl;  
+            cout << "CONGRATULATIONS! YOU WIN!" << endl;
         }
         else
         {
-            cout << "Try again." << endl;
-            wrong_guess_count++;
-            cout << "wrong_guess_count = " << wrong_guess_count << endl;
-            hangman_count(wrong_guess_count);
+            cout << "SORRY, YOU LOSE." << endl;
         }
-        finish = check_endgame(wrong_guess_count, letter_count, secret_word);
-        win = win_or_not(wrong_guess_count, letter_count, secret_word);
-        if (finish == true)
-        {
-            if (win == true)
-            {
-                cout << "CONGRATULATIONS! YOU WIN!" << endl;
-            }
-            else
-            {
-               cout << "SORRY, YOU LOSE." << endl;
-            }
-            
-            cout << "THE SECRET WORD IS:  " << secret_word << endl;
-        }
-      }
+        
+        cout << "THE SECRET WORD IS:  " << secret_word << endl;
+    }
+    }
 
       
       
